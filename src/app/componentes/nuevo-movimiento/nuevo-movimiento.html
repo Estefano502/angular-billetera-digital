@@ -1,0 +1,83 @@
+<div class="card shadow-sm mt-4">
+
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0">Registrar movimiento</h5>
+  </div>
+
+  <div class="card-body">
+
+    <form (submit)="registrarMovimiento($event)">
+
+      <div class="mb-3">
+
+        <label class="form-label">
+          Tipo de movimiento
+        </label>
+
+        <select
+          class="form-select"
+          [value]="tipo"
+          (change)="cambiarTipo($event)"
+        >
+          <option value="Recarga">Recarga</option>
+          <option value="Gasto">Gasto</option>
+        </select>
+
+      </div>
+
+      <div class="mb-3">
+
+        <label class="form-label">
+          Monto (S/)
+        </label>
+
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Ingrese el monto"
+          min="0.01"
+          step="0.01"
+          [value]="monto ?? ''"
+          (input)="cambiarMonto($event)"
+        />
+
+      </div>
+
+      @if (monto !== null && !montoValido()) {
+
+        <div class="alert alert-danger py-2">
+          Ingrese un monto válido mayor a cero.
+        </div>
+
+      }
+
+      @if (saldoInsuficiente()) {
+
+        <div class="alert alert-danger py-2">
+          Saldo insuficiente para realizar el gasto.
+        </div>
+
+      }
+
+      <div class="mb-3">
+
+        <small class="text-muted">
+          Saldo disponible:
+          <strong>S/ {{ saldo().toFixed(2) }}</strong>
+        </small>
+
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-success w-100"
+        [disabled]="!puedeRegistrar()"
+      >
+        Registrar movimiento
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
